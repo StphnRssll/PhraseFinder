@@ -1,0 +1,29 @@
+{% load static %}
+<html>
+    <head>
+        <title>Phrase Finder</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/vidsearch_app.css' %}">
+    </head>
+    <body>
+        <h3>
+            YouTube PhraseFinder
+        </h3>  
+            {% for line in found_lines %}
+                <div>
+                    <div>
+                        Words: {{ line.found_words }}
+                    </div>
+                    <div>
+                        Text: {{ line.line.text }}
+                    </div>
+                    <div>
+                        <a target="_blank" href="https://www.youtube.com/watch?v={{ base_id }}&t={{line.line.start}}" >Link</a>
+                        <br>
+                    </div>
+                </div>
+        
+            {% endfor %}
+    </body>
+</html>
