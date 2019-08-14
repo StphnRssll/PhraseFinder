@@ -1,3 +1,9 @@
 * {
     align-content: center
 }
+
+.scrollbox{
+    align-content: center;
+    background: #F8F8F8;
+    border: solid 1px;
+}

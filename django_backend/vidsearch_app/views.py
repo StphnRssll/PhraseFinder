@@ -41,14 +41,14 @@ def vid_search(query_string):
 
 # Takes a video's id & a caption query -> returns found_lines
 def search_transcript(vid_id, words):
-    error_count = 0
     transcript = None
+    found_lines = []
+
     try:
         transcript = YouTubeTranscriptApi.get_transcript(vid_id)
     except:
         return "NO_TRANSCRIPT"
         
-    found_lines = []
     words = [word.upper() for word in words]
     for line in transcript: # vvv Bek Magic vvv
         line["start"] = int(line["start"]) # "start" is a string respresing the start time. this makes start an int.
@@ -61,18 +61,8 @@ def search_transcript(vid_id, words):
     # "found_words" contains each cap_keyword found on the line and "line" is a json type thing i believe
 
 
-def main(request): #old main
-    key_words = request.GET.get("key_words")
-    vid_url = request.GET.get("vid_url")
-    vid_id = getID(vid_url)
-    key_words = request.GET.get("key_words").split(" ")
-    found_lines = search_transcript(vid_id, key_words)
-    return render(request, 'results.html', context = {"found_lines": found_lines, "base_id": vid_id} ) 
-
-
 def newMain(request):
     vid_query = str(request.GET.get("vid_query"))
-    caption_query = str(request.GET.get("caption_query"))
     [top_vid_ids,top_vid_titles] = vid_search(vid_query)
 
     # Search for captions
@@ -90,4 +80,5 @@ def newMain(request):
         top_vids.append(vid)
             
     # query_string = vid_search(vid_query)
-    return render(request, 'newResults.html', context = {"top_vid_ids": top_vids, "top_vid_titles": top_vid_titles, "found_lines": found_lines,"NO_TRANSCRIPT_COUNT": NO_TRANSCRIPT_COUNT})
+    context = {"top_vids": top_vids, "top_vid_titles": top_vid_titles, "found_lines": found_lines,"NO_TRANSCRIPT_COUNT": NO_TRANSCRIPT_COUNT}
+    return JsonResponse(context)

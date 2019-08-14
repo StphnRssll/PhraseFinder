@@ -20,6 +20,5 @@ from django.views.generic.base import TemplateView
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name="search.html")),
-    path('results', views.main),
     path('newResults',views.newMain)
 ]
