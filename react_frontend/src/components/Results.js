@@ -5,13 +5,13 @@ import {
   Container,
   Row,
   Col,
-  Navbar,
-  Nav,
-  Form,
-  FormControl,
-  Button,
-  NavDropdown,
-  InputGroup,
+  //Navbar,
+  //Nav,
+  //Form,
+  //FormControl,
+  //Button,
+  //NavDropdown,
+  //InputGroup,
   ListGroup,
   Alert,
   Table
@@ -21,7 +21,6 @@ const videoListStyle = {
   display: 'flex',
   flex: '100px 1fr'
 }
-
 const imageStyle = {
   display: 'inline-block',
   maxWidth: '100px',
@@ -31,23 +30,47 @@ const cursorStyle = {
   cursor: 'pointer',
 }
 
+const formatSeconds = (seconds) => {
+	let hours = Math.floor(seconds / (3600));
+	seconds = seconds%3600;
+	let minutes = Math.floor(seconds / 60);
+	seconds = seconds%60;
+
+	if(hours>0){
+		return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+	}
+	if(minutes>0){
+		return `${minutes}:${seconds.toString().padStart(2, "0")}`
+	}
+	return `${seconds}`
+}
+
+
 function Results(props) {
   
   const [apiResponse,setApiResponse] = React.useState();
   const [selectedVid, setSelectedVid] = React.useState();
-  const [selectedTime, setSelectedTime] = React.useState();
+	const [selectedTime, setSelectedTime] = React.useState();
 
   React.useEffect(() => {
-    const params = queryString.parse(props.location.search);
+		const params = queryString.parse(props.location.search);
+		setApiResponse(undefined);
+		setSelectedVid(undefined);
+		setSelectedTime(undefined);
     getVideoSearch(params.vidQuery,params.capQuery)
       .then(apiResponse => {
         setApiResponse(apiResponse)
       });
-      //style="width:500px;height:150px;line-height:3em;overflow:scroll;padding:5px;"
-      //{JSON.stringify(video, null, 2)}
+      
 
-  }, [props.location.search]);
-  
+	}, [props.location.search]);
+	
+	React.useEffect(() => {
+		if(selectedTime){
+			window.scrollTo(0,0);
+		}
+	},[selectedTime])	
+	
   return (
     <React.Fragment>
       <Container>
@@ -58,11 +81,12 @@ function Results(props) {
               <iframe
                 width="560"
                 height="315"
-                  src={selectedTime ? `https://www.youtube.com/embed/${selectedVid.vid_id}?start=${selectedTime}` : `https://www.youtube.com/embed/${selectedVid.vid_id}`}
+                  src={selectedTime ? `https://www.youtube.com/embed/${selectedVid.vid_id}?start=${selectedTime}&autoplay=1` : `https://www.youtube.com/embed/${selectedVid.vid_id}`}
                 frameBorder="0"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen>
               </iframe>
+							<p>*Timestamps may not align perfectly with captions in video</p>
               {selectedVid.transcript ? (
                   <Table striped bordered hover>
                     <thead>
@@ -74,72 +98,93 @@ function Results(props) {
                     <tbody>
                       {selectedVid.found_lines.map((line, index) => (
                         <tr style={cursorStyle} key={`${selectedVid.vid_id}-${index}`} onClick={() => setSelectedTime(line.line["start"])}>
-                          <td>{line.line["start"]}</td>
+                          <td>{formatSeconds(line.line["start"])}</td>
                           <td>{line.line["text"]}</td>
                         </tr>
                       ))}
                     </tbody>
                   </Table>
               ) : (
-                <Alert variant="primary">
+                <Alert variant="danger">
                   This video has no transcript.
                 </Alert>
               )}
               </React.Fragment>
             ): (
-              <Alert variant="primary">
+               apiResponse ? <Alert variant="primary">
                 Please select a video from the list.
-              </Alert>
+              </Alert> : null
             )}
-
           </Col>
           <Col>
-            {apiResponse ? (
-              <ListGroup variant="flush">
-                {apiResponse.data.top_vids.map(video => {
-                  if (selectedVid && selectedVid.vid_id === video.vid_id) {
-                    return (
-                      <ListGroup.Item
-                        active
-                        variant='primary'
-                        onClick={() => {
-                          setSelectedVid(video);
-                          setSelectedTime();
-                        }}
-                        key={video.vid_id}>
-                        <div style={videoListStyle}>
-                          <img style={imageStyle} src={`https://i.ytimg.com/vi/${video.vid_id}/hqdefault.jpg`} />
-                          <p>{video.title}</p>
-                        </div>
-                      </ListGroup.Item>
-                    )
-                  }
-                  return (
-                    <ListGroup.Item
-                      onClick={() => {
-                        setSelectedVid(video);
-                        setSelectedTime();
-                      }}
-                      key={video.vid_id}>
-                      <div style={videoListStyle}>
-                        <img style={imageStyle} src={`https://i.ytimg.com/vi/${video.vid_id}/hqdefault.jpg`} />
-                        <p>{video.title}</p>
-                      </div>
-                    </ListGroup.Item>
-                  )
-                })}
-              </ListGroup>
-            ) : (
-              <Alert variant="primary">
-                The list is loading.
-              </Alert>
-            )}
+                {apiResponse ? (
+									<ListGroup variant="flush">
+											{apiResponse.data.top_vids.map(video => {
+											if (selectedVid && selectedVid.vid_id === video.vid_id) {
+													return (
+													<ListGroup.Item
+														active
+														variant='primary'
+														onClick={() => {
+														setSelectedVid(video);
+														setSelectedTime();
+														}}
+														key={video.vid_id}>
+													<div style={videoListStyle}>
+														<Container>
+															<Row>
+																	<Col lg={3}>
+																		<img alt="Thumbnail" style={imageStyle} src={`https://i.ytimg.com/vi/${video.vid_id}/hqdefault.jpg`} />
+																	</Col>
+																	<Col lg={9}>
+																	<p>{video.title}</p>
+																		<Row>
+																		{video.transcript ? 
+																	(<Alert variant="primary">Occurances of word: {video.word_count}</Alert>)
+																	:<Alert variant="danger">No transcript</Alert>}
+																		</Row>
+																	</Col>
+															</Row>
+														</Container>	
+													</div>
+													</ListGroup.Item>
+													)
+											}
+											return (
+												<ListGroup.Item
+													onClick={() => {
+													setSelectedVid(video);
+													setSelectedTime();
+													}
+												} key={video.vid_id}>
+												<div style={videoListStyle}>
+												<Container>
+													<Row>
+															<Col lg={3}>
+																<img alt="Thumbnail" style={imageStyle} src={`https://i.ytimg.com/vi/${video.vid_id}/hqdefault.jpg`} />
+															</Col>
+															<Col lg={9}>
+															<p>{video.title}</p>
+																<Row>
+																	{console.log(video)}
+																	{video.transcript ? 
+																	(<Alert variant="primary">Occurances of word: {video.word_count}</Alert>)
+																	:<Alert variant="danger">No transcript</Alert>}
+																</Row>
+															</Col>
+													</Row>
+												</Container>												
+												</div>
+												</ListGroup.Item>
+											)
+											})}
+									</ListGroup>
+                ) : ( 
+								<React.Fragment>
+									<Alert variant="primary">The list is loading.</Alert>
+									<div className="ellipseContainer"><div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
+								</React.Fragment>)}
           </Col>
-        </Row>
-        <Row>
-          <Col>1 of 3</Col>
-          <Col>2 of 3</Col>
-          <Col>3 of 3</Col>
         </Row>
       </Container>
     </React.Fragment>

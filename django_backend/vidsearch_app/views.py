@@ -43,37 +43,40 @@ def vid_search(query_string):
 def search_transcript(vid_id, words):
     transcript = None
     found_lines = []
-
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(vid_id)
+        transcript = YouTubeTranscriptApi.get_transcript(vid_id, languages=['en'])
     except:
-        return "NO_TRANSCRIPT"
-        
+        return ["NO_TRANSCRIPT",0]
+    
+    word_count = 0
     words = [word.upper() for word in words]
-    for line in transcript: # vvv Bek Magic vvv
+    
+    for line in transcript:
         line["start"] = int(line["start"]) # "start" is a string respresing the start time. this makes start an int.
         found_words = [] 
-        found_words = list(filter(lambda word:line["text"].upper().find(word)!=-1,words)) # 
+        found_words = list(filter(lambda word:line["text"].upper().find(word)!=-1,words)) 
         if(found_words):
             found_lines.append({"found_words": found_words, "line": line}) # if the word is found in the line, catalogue the line
+            word_count = word_count + 1
+            print(word_count)
     
-    return found_lines # found_lines contains an entry for every line a word is found on. 
+    return [found_lines, word_count] # found_lines contains an entry for every line a word is found on. 
     # "found_words" contains each cap_keyword found on the line and "line" is a json type thing i believe
 
 
 def newMain(request):
     vid_query = str(request.GET.get("vid_query"))
-    [top_vid_ids,top_vid_titles] = vid_search(vid_query)
+    [top_vid_ids, top_vid_titles] = vid_search(vid_query)
 
     # Search for captions
     caption_query = request.GET.get("caption_query")
     key_words = caption_query.split(" ")
     NO_TRANSCRIPT_COUNT = 0
     top_vids = []
-    
+
     for index, vid_id in enumerate(top_vid_ids):
-        found_lines = search_transcript(vid_id,key_words)
-        vid = {"vid_id": vid_id, "transcript": True, "title": top_vid_titles[index], "found_lines": found_lines}
+        [found_lines, word_count] = search_transcript(vid_id, key_words)
+        vid = {"vid_id": vid_id, "transcript": True, "title": top_vid_titles[index], "found_lines": found_lines,"word_count": word_count}
         if found_lines == "NO_TRANSCRIPT":
             NO_TRANSCRIPT_COUNT = NO_TRANSCRIPT_COUNT + 1
             vid["transcript"] = False

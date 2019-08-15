@@ -8,7 +8,7 @@ function App() {
   return (
     <React.Fragment>
       <Route path={'/'} component={SearchBar} />
-      <Route path={'/ home'} component={Home} />
+      <Route path={'/'} exact component={Home} />
       <Route path={'/results'} component={Results} />
     </React.Fragment>
   );

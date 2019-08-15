@@ -13,7 +13,6 @@ function SearchBar(props) {
   const [capQuery, setCapQuery] = React.useState('')
   const onSubmit=(event) => {
     event.preventDefault();
-    console.log('redirect')
     props.history.push({
       pathname: '/results',
       search: queryString.stringify({
@@ -34,7 +33,7 @@ function SearchBar(props) {
           <Form inline onSubmit={onSubmit}>
             <FormControl type="text" placeholder="Video" className="mr-sm-2" onChange={(event) => setVidQuery(event.target.value)} value={vidQuery} />
             <FormControl type="text" placeholder="Caption" className="mr-sm-2" onChange={(event) => setCapQuery(event.target.value)} value={capQuery} />
-            <Button variant="primary" type="submit">Search</Button>
+            <Button variant="danger" type="submit">Search</Button>
           </Form>
         </Navbar.Collapse>
       </Navbar>
