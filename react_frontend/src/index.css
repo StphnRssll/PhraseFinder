@@ -9,9 +9,22 @@ body {
   text-align: center;
   font-size: 1.3em;
 }
+.home>h2 {
+  text-align: center;
+}
 div.container {
   margin-top: 20px;
 }
+
+.alert {
+  margin-bottom: 1px;
+  height: 35px;
+  line-height:30px;
+  padding:0px 15px;
+}
+
+
+
 
 .ellipseContainer{
   text-align: center;

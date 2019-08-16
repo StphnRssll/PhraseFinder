@@ -32,9 +32,9 @@ const cursorStyle = {
 
 const formatSeconds = (seconds) => {
 	let hours = Math.floor(seconds / (3600));
-	seconds = seconds%3600;
+	seconds %= 3600;
 	let minutes = Math.floor(seconds / 60);
-	seconds = seconds%60;
+	seconds %= 60;
 
 	if(hours>0){
 		return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`

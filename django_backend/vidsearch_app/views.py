@@ -26,7 +26,7 @@ def vid_search(query_string):
     top_vid_titles = []
     vid_id = ""
 
-    limit = 5
+    limit = 15
     for index, v in enumerate(vids):
         if("v=" in str(v)):
             vid_id = str(v['href'])
