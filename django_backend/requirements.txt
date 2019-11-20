@@ -12,4 +12,4 @@ requests==2.22.0
 soupsieve==1.9.2
 sqlparse==0.3.0
 urllib3==1.25.3
-youtube-transcript-api==0.1.7
+youtube-transcript-api==0.1.9
