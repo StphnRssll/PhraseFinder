@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const API_URL = "http://4844b028.ngrok.io";
+const API_URL = "https://stphnrssll-phrasefinder.zeet.app/";
 //const config = {};
 
 function getVideoSearch(vid_query,caption_query){
