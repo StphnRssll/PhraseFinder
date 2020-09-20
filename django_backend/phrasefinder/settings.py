@@ -26,7 +26,7 @@ SECRET_KEY = '(s!$!kmdps0l^@!^%*$7*&xdt-iy3y95p7+-$zdhro+1&(2&g$'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '4844b028.ngrok.io',
+    'http://stphnrssll-phrasefinder.zeet.app/',
 ]
 
 
