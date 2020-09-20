@@ -67,7 +67,8 @@ def search_transcript(vid_id, words):
 def newMain(request):
     vid_query = str(request.GET.get("vid_query"))
     [top_vid_ids, top_vid_titles] = vid_search(vid_query)
-
+    found_lines = [];
+    
     # Search for captions
     caption_query = request.GET.get("caption_query")
     key_words = caption_query.split(" ")
