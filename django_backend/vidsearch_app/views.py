@@ -11,9 +11,9 @@ import json
 
 # Helper function - gets video url and returns id
 def getID(vid_url):
-    vid_url = vid_url.replace('&t=1s', '')
-    vid_id = vid_url.split("=")[1]
-    return(vid_id)
+  vid_url = vid_url.replace('&t=1s', '')
+  vid_id = vid_url.split("=")[1]
+  return(vid_id)
 
 def getVidsAPI(query_string):
   vids = SearchVideos(query_string, offset = 1, mode = "json", max_results = 10)
@@ -45,17 +45,15 @@ def oldGetVids(query_string):
 
 # Takes query from video search box and returns [ID's,Titles] of top results
 def vid_search(query_string):
-
-    vids = getVidsAPI(query_string)
-    ids = []
-    titles = []
-    for vid in vids:
-      print(vid["id"])
-      print(vid["title"])
-      ids.append(vid["id"])
-      titles.append(vid["title"])
-
-    return [ids,titles]
+  vids = getVidsAPI(query_string)
+  ids = []
+  titles = []
+  for vid in vids:
+    print(vid["id"])
+    print(vid["title"])
+    ids.append(vid["id"])
+    titles.append(vid["title"])
+  return [ids,titles]
 
 
 # Takes a video's id & a caption query -> returns found_lines
