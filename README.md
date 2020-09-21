@@ -3,4 +3,14 @@ Search for words across several YouTube videos via video caption tracks
 ![Homepage](https://i.ibb.co/rtqzhqp/homepage.png)
 ![Results](https://i.ibb.co/QMMZ7zs/results.png)
 
-This app was built at TRACE Camp 2019 using Python Django and React JS
+# How to use
+Startup django server with
+- pip install -U -r django_backend/requirements.txt
+- python django_backend/manage.py runserver 0.0.0.0:8000
+
+Startup React server with 
+- cd react_frontend
+- npm i
+- npm run start
+
+This app was originally built at TRACE Camp 2019 using Python Django and React JS
