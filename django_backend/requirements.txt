@@ -18,7 +18,7 @@ dbus-python==1.2.16
 decorator==4.4.2
 defusedxml==0.6.0
 distro==1.4.0
-Django==2.2.4
+Django==2.2.13
 django-cors-headers==3.0.2
 djangorestframework==3.10.2
 entrypoints==0.3
