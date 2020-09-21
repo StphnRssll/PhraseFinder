@@ -7,7 +7,7 @@ Search for words across several YouTube videos via video caption tracks
 Startup django server with
 - cd django_backend
 - pip install -U -r requirements.txt
-- python django_backend/manage.py runserver localhost:8000
+- python manage.py runserver localhost:8000
 
 Startup React server with 
 - cd react_frontend
