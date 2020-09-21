@@ -88,7 +88,7 @@ def search_transcript(vid_id, words):
 
 def newMain(request):
     vid_query = str(request.GET.get("vid_query"))
-    [top_vid_ids, top_vid_titles] = vid_search(vid_query)
+    [video_ids, video_titles] = vid_search(vid_query)
     found_lines = [];
 
     # Search for captions
@@ -97,14 +97,14 @@ def newMain(request):
     NO_TRANSCRIPT_COUNT = 0
     top_vids = []
 
-    for index, vid_id in enumerate(top_vid_ids):
+    for index, vid_id in enumerate(video_ids):
         [found_lines, word_count] = search_transcript(vid_id, key_words)
-        vid = {"vid_id": vid_id, "transcript": True, "title": top_vid_titles[index], "found_lines": found_lines,"word_count": word_count}
+        vid = {"vid_id": vid_id, "transcript": True, "title": video_titles[index], "found_lines": found_lines,"word_count": word_count}
         if found_lines == "NO_TRANSCRIPT":
             NO_TRANSCRIPT_COUNT = NO_TRANSCRIPT_COUNT + 1
             vid["transcript"] = False
         top_vids.append(vid)
 
     # query_string = vid_search(vid_query)
-    context = {"top_vids": top_vids, "top_vid_titles": top_vid_titles, "found_lines": found_lines,"NO_TRANSCRIPT_COUNT": NO_TRANSCRIPT_COUNT}
+    context = {"top_vids": top_vids, "video_titles": top_vid_titles, "found_lines": found_lines,"NO_TRANSCRIPT_COUNT": NO_TRANSCRIPT_COUNT}
     return JsonResponse(context)
