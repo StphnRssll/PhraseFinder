@@ -110,6 +110,6 @@ def newMain(request):
         top_vids.append(vid)
 
     # query_string = vid_search(vid_query)
-    context = {"top_vids": top_vids, "video_titles": top_vid_titles,
+    context = {"top_vids": top_vids, "video_titles": video_titles,
                "found_lines": found_lines, "NO_TRANSCRIPT_COUNT": NO_TRANSCRIPT_COUNT}
     return JsonResponse(context)
