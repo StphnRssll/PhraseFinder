@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'stphnrssll-phrasefinder.zeet.app',
+    'localhost',
 ]
 
 
