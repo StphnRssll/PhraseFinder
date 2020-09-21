@@ -41,7 +41,7 @@ def oldGetVids(query_string):
           top_vid_titles.append(title)
           if index == limit:
               break
-    return [top_vid_ids,top_vid_titles]
+  return [top_vid_ids,top_vid_titles]
 
 # Takes query from video search box and returns [ID's,Titles] of top results
 def vid_search(query_string):
