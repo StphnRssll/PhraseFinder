@@ -15,19 +15,33 @@ def getID(vid_url):
     vid_id = vid_url.split("=")[1]
     return(vid_id)
 
-def getVids(query_string):
-    base = "https://www.youtube.com/results?search_query="
-    r = requests.get(base+query_string)
-    page = r.text
-    soup=bs(page,'html.parser')
-    vids = soup.findAll('a',attrs={'class':'yt-uix-tile-link'})
-    return vids
-
 def getVidsAPI(query_string):
   vids = SearchVideos(query_string, offset = 1, mode = "json", max_results = 10)
   vids = json.loads(vids.result())["search_result"]
   return vids
 
+
+def oldGetVids(query_string):
+  base = "https://www.youtube.com/results?search_query="
+  r = requests.get(base+query_string)
+  page = r.text
+  soup=bs(page,'html.parser')
+  vids = soup.findAll('a',attrs={'class':'yt-uix-tile-link'})
+  top_vid_ids = []
+  top_vid_titles = []
+  vid_id = ""
+  # print("vids",vids)
+  limit = 15
+  for index, v in enumerate(vids):
+      if("v=" in str(v)):
+          vid_id = str(v['href'])
+          vid_id = getID(vid_id)
+          title = str(v['title'])
+          top_vid_ids.append(vid_id)
+          top_vid_titles.append(title)
+          if index == limit:
+              break
+    return [top_vid_ids,top_vid_titles]
 
 # Takes query from video search box and returns [ID's,Titles] of top results
 def vid_search(query_string):
@@ -40,23 +54,6 @@ def vid_search(query_string):
       print(vid["title"])
       ids.append(vid["id"])
       titles.append(vid["title"])
-
-
-    # vids = getVids(query_string)
-    # top_vid_ids = []
-    # top_vid_titles = []
-    # vid_id = ""
-    # # print("vids",vids)
-    # limit = 15
-    # for index, v in enumerate(vids):
-    #     if("v=" in str(v)):
-    #         vid_id = str(v['href'])
-    #         vid_id = getID(vid_id)
-    #         title = str(v['title'])
-    #         top_vid_ids.append(vid_id)
-    #         top_vid_titles.append(title)
-    #         if index == limit:
-    #             break
 
     return [ids,titles]
 
