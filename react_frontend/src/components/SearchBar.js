@@ -36,6 +36,7 @@ function SearchBar(props) {
             <Button variant="danger" type="submit">Search</Button>
           </Form>
         </Navbar.Collapse>
+      </Navbar>
     </React.Fragment>
   )
 }
