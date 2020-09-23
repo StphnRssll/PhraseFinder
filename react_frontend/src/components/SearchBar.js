@@ -36,7 +36,7 @@ function SearchBar(props) {
             <Button variant="danger" type="submit">Search</Button>
           </Form>
         </Navbar.Collapse>
-      <a href="https://github.com/StphnRssll/PhraseFinder/edit/master">
+      <a href="https://github.com/StphnRssll/PhraseFinder">
         <span class="iconify" data-icon="logos-github-icon" data-inline="false"></span>
       </a>
       </Navbar>
