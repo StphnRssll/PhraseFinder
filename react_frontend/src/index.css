@@ -23,7 +23,9 @@ div.container {
   padding:0px 15px;
 }
 
-
+.iconify{
+  max-width: 50px;
+}
 
 
 .ellipseContainer{
