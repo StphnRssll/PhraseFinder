@@ -26,6 +26,8 @@ div.container {
 .iconify{
   min-width: 60px;
   min-height: 60px;
+  text-align: center;
+  margin: 0 auto;
 }
 
 
